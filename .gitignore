@@ -7,3 +7,5 @@ Thumbs.db
 
 # Data files
 data/raw/*.csv
+
+.vscode/
