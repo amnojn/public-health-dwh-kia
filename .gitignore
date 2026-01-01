@@ -5,5 +5,11 @@ Thumbs.db
 # Environment
 .env
 
-# Data files
-data/raw/*.csv
+# Ignore all data by default
+data/*
+
+# BUT allow synthetic raw data for portfolio
+!data/raw/
+!data/raw/*.csv
+
+.vscode/
