@@ -129,3 +129,95 @@ The following items are explicitly out of scope for this project:
 - Childbirth and neonatal datasets.
 - Business Intelligence dashboards or visualizations.
 - Direct integration with hospital or clinical operational systems.
+
+## Silver Layer – Data Integration & Analysis Notes (Optional but Recommended)
+
+### Purpose
+
+This section documents analytical considerations and data integration assumptions
+identified during the **Silver Layer analysis phase**.
+
+These notes do not define transformation logic directly, but provide **context,
+constraints, and rationale** that guide Silver Layer design decisions.
+
+---
+
+### Logical Data Grouping
+
+During analysis, Silver tables are logically grouped into two domains:
+
+1. **Healthcare Service Records**
+   - `silver.kunjungan`
+   - `silver.anc`
+
+2. **Master Reference Data**
+   - `silver.ibu`
+   - `silver.fasilitas`
+
+This grouping clarifies ownership, responsibility, and future scalability of
+data sources without enforcing physical separation.
+
+---
+
+### Cross-Domain Relationships
+
+Although stored as separate logical domains, Healthcare Service Records and
+Master Reference Data are **intentionally linked** via identifier relationships.
+
+Key integration points include:
+
+| Child Table | Column | Parent Table | Purpose |
+|------------|--------|--------------|--------|
+| `silver.kunjungan` | `fasilitas_id` | `silver.fasilitas` | Location of service delivery |
+| `silver.anc` | `ibu_id` | `silver.ibu` | Maternal demographic context |
+| `silver.anc` | `kunjungan_id` | `silver.kunjungan` | Clinical visit linkage |
+
+These relationships are validated during Silver transformations but are not
+enforced as database-level foreign keys to preserve ingestion flexibility.
+
+---
+
+### Assumptions & Constraints
+
+The following assumptions apply to the Silver Layer:
+
+- Source systems are operational and may contain inconsistencies.
+- Bronze Layer data is treated as authoritative input.
+- Silver Layer prioritizes **data correctness over completeness**.
+- Invalid or orphan records may be excluded if they violate logical rules.
+- Business metrics and aggregations are explicitly deferred to the Gold Layer.
+
+---
+
+### Diagram Alignment
+
+The **Silver Data Integration Diagram** (`data_integration_silver.drawio`)
+serves as the authoritative visual reference for:
+
+- Table relationships
+- Identifier linkages
+- Data flow boundaries
+
+Any future changes to table relationships must be reflected both in SQL
+transformations and in the integration diagram.
+
+---
+
+### Non-Functional Considerations
+
+- Silver tables are designed for **readability and auditability**, not performance optimization.
+- Schema changes in Bronze may require re-validation of Silver integration logic.
+- Silver transformations must remain deterministic and idempotent.
+
+---
+
+### Out of Scope
+
+The following are intentionally excluded from Silver Layer requirements:
+
+- Analytical KPIs
+- Reporting logic
+- Aggregated metrics
+- Dimensional modeling constructs
+
+These concerns are addressed exclusively in the Gold Layer.
