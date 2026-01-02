@@ -87,3 +87,106 @@ deterministic transformation logic.
 No business aggregations or analytical metrics are introduced in the Silver
 Layer. Each record can be traced back to its original raw source for auditing
 and debugging purposes.
+
+# Silver Layer Data Dictionary
+
+This section documents the structure and semantics of all tables in the Silver Layer.
+The Silver Layer contains cleansed, standardized, and deduplicated data derived from
+the Bronze Layer and serves as the trusted foundation for analytical modeling.
+
+---
+
+## silver.fasilitas
+
+Master reference table for healthcare facilities.
+
+| Column Name     | Data Type  | Description |
+|-----------------|------------|-------------|
+| fasilitas_id    | TEXT       | Unique identifier of the healthcare facility |
+| nama_fasilitas  | TEXT       | Standardized facility name |
+| jenis_fasilitas | TEXT       | Facility type (Puskesmas, Rumah Sakit, Klinik, Other) |
+| kecamatan       | TEXT       | Sub-district name |
+| kabupaten       | TEXT       | District name |
+| created_at      | TIMESTAMP  | Record creation timestamp inherited from ingestion |
+
+**Source Table:** `bronze.raw_fasilitas`
+
+**Transformation Notes:**
+- Facility ID normalized (lowercase, trimmed)
+- Text attributes standardized
+- Facility types categorized into controlled values
+- Duplicate records removed using earliest ingestion timestamp
+
+---
+
+## silver.ibu
+
+Master table containing maternal demographic data.
+
+| Column Name     | Data Type | Description |
+|-----------------|-----------|-------------|
+| ibu_id          | TEXT      | Unique identifier of the mother |
+| nama_ibu        | TEXT      | Standardized mother name |
+| tanggal_lahir   | DATE      | Date of birth |
+| pendidikan      | TEXT      | Education level |
+| pekerjaan       | TEXT      | Occupation |
+| alamat          | TEXT      | Residential address |
+| usia_ibu        | INTEGER   | Derived age in years |
+| created_at      | TIMESTAMP | Record creation timestamp |
+
+**Source Table:** `bronze.raw_ibu`
+
+**Transformation Notes:**
+- Date parsing and validation
+- Derived age calculation
+- Text normalization
+- Deduplication based on ibu_id
+
+---
+
+## silver.kunjungan
+
+Cleaned healthcare visit records.
+
+| Column Name        | Data Type | Description |
+|--------------------|-----------|-------------|
+| kunjungan_id       | TEXT      | Unique visit identifier |
+| pasien_id          | TEXT      | Patient identifier |
+| fasilitas_id       | TEXT      | Healthcare facility reference |
+| tanggal_kunjungan  | DATE      | Date of visit |
+| jenis_kunjungan    | TEXT      | Type of healthcare service |
+| created_at         | TIMESTAMP | Record creation timestamp |
+
+**Source Table:** `bronze.raw_kunjungan`
+
+**Transformation Notes:**
+- Date standardization
+- Visit type normalization
+- Removal of invalid and duplicate records
+- Referential alignment with silver.fasilitas
+
+---
+
+## silver.anc
+
+Antenatal Care (ANC) service records.
+
+| Column Name                | Data Type | Description |
+|----------------------------|-----------|-------------|
+| anc_id                     | TEXT      | Unique ANC record identifier |
+| ibu_id                     | TEXT      | Reference to mother |
+| kunjungan_id               | TEXT      | Reference to healthcare visit |
+| tanggal_pemeriksaan        | DATE      | ANC examination date |
+| usia_kehamilan_minggu      | INTEGER   | Gestational age in weeks |
+| berat_badan_kg             | NUMERIC   | Mother's weight |
+| tekanan_darah_sistolik     | INTEGER   | Systolic blood pressure |
+| tekanan_darah_diastolik    | INTEGER   | Diastolic blood pressure |
+| created_at                 | TIMESTAMP | Record creation timestamp |
+
+**Source Table:** `bronze.raw_anc`
+
+**Transformation Notes:**
+- Blood pressure parsing and validation
+- Numeric domain enforcement
+- Date normalization
+- Deduplication by anc_id

@@ -183,3 +183,78 @@ The following are intentionally excluded from Silver Layer data quality checks:
 - Performance indicators
 
 These elements will be addressed in the Gold Layer.
+
+# Silver Layer Data Quality Rules
+
+This section defines the data quality standards applied to the Silver Layer to ensure
+that data is consistent, reliable, and ready for analytical consumption.
+
+---
+
+## Global Quality Rules
+
+The following rules apply to all Silver tables:
+
+- Primary identifiers must not be NULL
+- Primary identifiers must be unique
+- Duplicate logical records must be removed
+- All dates must be valid and not exceed the current date
+- Numeric values must fall within reasonable domain ranges
+- Text fields must be trimmed and standardized
+
+---
+
+## Table-Specific Quality Rules
+
+### silver.fasilitas
+
+- fasilitas_id must be unique and not NULL
+- jenis_fasilitas must be one of:
+  - Puskesmas
+  - Rumah Sakit
+  - Klinik
+  - Other
+- kecamatan and kabupaten must not be empty
+
+---
+
+### silver.ibu
+
+- ibu_id must be unique
+- tanggal_lahir must be earlier than the current date
+- usia_ibu must be a positive and reasonable value
+- Duplicate maternal records are not allowed
+
+---
+
+### silver.kunjungan
+
+- kunjungan_id must be unique
+- tanggal_kunjungan must not be in the future
+- fasilitas_id must exist in silver.fasilitas
+- Each record represents a single healthcare visit
+
+---
+
+### silver.anc
+
+- anc_id must be unique
+- usia_kehamilan_minggu must be between 1 and 45
+- berat_badan_kg must be greater than zero
+- Blood pressure values must be successfully parsed
+- kunjungan_id must exist in silver.kunjungan
+- ibu_id must exist in silver.ibu
+
+---
+
+## Referential Integrity Validation
+
+Logical referential integrity is enforced through validation queries rather than
+physical foreign key constraints.
+
+Validated relationships include:
+- ANC → Kunjungan
+- Kunjungan → Fasilitas
+- ANC → Ibu
+
+All validations must pass before data is promoted to the Gold Layer.

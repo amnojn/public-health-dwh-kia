@@ -221,3 +221,12 @@ The following are intentionally excluded from Silver Layer requirements:
 - Dimensional modeling constructs
 
 These concerns are addressed exclusively in the Gold Layer.
+
+## Silver Layer Requirements
+
+- Silver tables must be derived exclusively from Bronze tables
+- All data quality rules must be enforced before Gold layer processing
+- No business aggregations or KPIs are allowed in Silver
+- Logical referential integrity must be validated
+- All transformations must be implemented using SQL and version controlled
+- Documentation updates are mandatory for every Silver layer change

@@ -79,6 +79,11 @@ The Silver Layer prepares data for analytical use by applying data cleansing, st
 - Derived and enriched columns when necessary.
 - Still table-based (not dimensional modeling yet).
 
+The Silver Layer enforces data quality through explicit cleansing rules,
+standardization logic, deduplication processes, and logical referential
+integrity validation. This layer represents the single trusted and integrated
+source of data prior to dimensional modeling in the Gold Layer.
+
 **Target Users:**  
 - Data Engineers  
 - Data Analysts
