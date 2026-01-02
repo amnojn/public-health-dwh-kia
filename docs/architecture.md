@@ -83,6 +83,50 @@ The Silver Layer prepares data for analytical use by applying data cleansing, st
 - Data Engineers  
 - Data Analysts
 
+### Data Integration & Entity Relationships
+
+In the Silver Layer, raw healthcare data from multiple Bronze tables is
+logically integrated to reflect real-world Maternal and Child Health (KIA)
+service workflows.
+
+The integration focuses on establishing clear and consistent relationships
+between core healthcare entities:
+
+- Healthcare visits (kunjungan)
+- Antenatal Care examinations (ANC)
+- Mothers (ibu)
+- Healthcare facilities (fasilitas)
+
+#### Core Integration Logic
+
+The following relationships define the Silver integration model:
+
+- Each ANC examination (`raw_anc`) is linked to exactly one healthcare visit
+  (`raw_kunjungan`) via `kunjungan_id`.
+
+- Each healthcare visit (`raw_kunjungan`) occurs at one healthcare facility
+  (`raw_fasilitas`) via `fasilitas_id`.
+
+- Each ANC examination (`raw_anc`) is associated with one mother
+  (`raw_ibu`) via `ibu_id`.
+
+This structure ensures that clinical measurements can always be traced back
+to:
+1. The service event (kunjungan)
+2. The patient (ibu)
+3. The physical location of care (fasilitas)
+
+#### Integration Diagram
+
+The logical relationships between Silver entities are documented in the
+following diagram:
+
+- `diagrams/data_integration_silver.drawio`
+
+This diagram serves as the authoritative reference for join logic and
+referential integrity enforcement during Silver transformations.
+
+
 ---
 
 ### 4.3 Gold Layer
