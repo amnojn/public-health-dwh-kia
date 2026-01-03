@@ -258,3 +258,21 @@ Validated relationships include:
 - ANC → Ibu
 
 All validations must pass before data is promoted to the Gold Layer.
+
+## Gold Layer Data Quality Rules
+
+### Dimensional Integrity
+- All fact records must reference valid dimension keys.
+- No NULL values allowed in foreign keys.
+
+### Grain Enforcement
+- Fact table grain: one row per ANC visit.
+- Duplicate anc_id in fact table is not allowed.
+
+### Numerical Sanity
+- usia_kehamilan_minggu must be between 1 and 45.
+- berat_badan must be greater than 0.
+
+### Temporal Validity
+- Date keys must exist in dim_date.
+- No future dates allowed.

@@ -190,3 +190,61 @@ Antenatal Care (ANC) service records.
 - Numeric domain enforcement
 - Date normalization
 - Deduplication by anc_id
+
+# Gold Layer Data Dictionary
+
+## gold.dim_date
+
+| Column | Type | Description |
+|------|-----|------------|
+| date_key | INTEGER | Surrogate key (YYYYMMDD) |
+| full_date | DATE | Calendar date |
+| year | INTEGER | Year |
+| month | INTEGER | Month number |
+| month_name | TEXT | Month name |
+| day | INTEGER | Day of month |
+| day_of_week | INTEGER | ISO day of week |
+| day_name | TEXT | Day name |
+| quarter | INTEGER | Quarter |
+
+---
+
+## gold.dim_ibu
+
+| Column | Type | Description |
+|------|-----|------------|
+| ibu_key | SERIAL | Surrogate key |
+| ibu_id | TEXT | Business identifier |
+| pendidikan | TEXT | Standardized education level |
+| pekerjaan | TEXT | Normalized occupation |
+| usia_ibu | INTEGER | Age at data snapshot |
+
+---
+
+## gold.dim_fasilitas
+
+| Column | Type | Description |
+|------|-----|------------|
+| fasilitas_key | SERIAL | Surrogate key |
+| fasilitas_id | TEXT | Business identifier |
+| nama_fasilitas | TEXT | Facility name |
+| jenis_fasilitas | TEXT | Facility type |
+| kecamatan | TEXT | District |
+| kabupaten | TEXT | Regency |
+
+---
+
+## gold.fact_anc_visit
+
+| Column | Type | Description |
+|------|-----|------------|
+| date_key | INTEGER | FK → dim_date |
+| ibu_key | INTEGER | FK → dim_ibu |
+| fasilitas_key | INTEGER | FK → dim_fasilitas |
+| anc_id | TEXT | ANC visit identifier |
+| kunjungan_id | TEXT | Visit identifier |
+| usia_kehamilan_minggu | INTEGER | Pregnancy age |
+| berat_badan | NUMERIC | Mother weight |
+| tekanan_darah_sistolik | INTEGER | Systolic BP |
+| tekanan_darah_diastolik | INTEGER | Diastolic BP |
+| anc_visit_count | INTEGER | Always 1 |

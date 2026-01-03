@@ -377,3 +377,6 @@ This structure ensures:
 - The schema is extensible to include additional public health domains in the future (e.g., immunization, child nutrition).
 
 The Star Schema design aligns with data warehousing best practices and supports scalable public health analytics.
+The Gold Layer is modeled using a Star Schema design to support analytical workloads.
+Each fact table is built at a clearly defined grain and references conformed dimensions.
+All Gold objects are exposed as SQL views to ensure freshness and simplify maintenance.
