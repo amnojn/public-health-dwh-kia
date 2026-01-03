@@ -284,3 +284,96 @@ The Gold Layer is considered analytically ready for implementation when the foll
 Only after meeting these criteria should technical implementation of the Gold Layer begin.
 
 ---
+
+## Gold Layer – Star Schema Design (Maternal and Child Health)
+
+The Gold Layer implements a **Star Schema** to support analytical workloads related to Maternal and Child Health (KIA), with a specific focus on Antenatal Care (ANC) services.
+
+This schema is designed to optimize query performance, simplify analytical logic, and provide a clear separation between measurable events (facts) and descriptive attributes (dimensions).
+
+---
+
+### Fact Table: `fact_anc_visit`
+
+**Grain Definition**
+
+Each record in the fact table represents **one ANC visit event**, defined by:
+- one mother
+- one healthcare facility
+- one examination date
+
+This grain ensures the highest level of analytical flexibility while maintaining consistency across KPI calculations.
+
+**Fact Table Measures**
+- Gestational age (weeks)
+- Maternal weight
+- Blood pressure (systolic and diastolic)
+- Visit count (default value = 1)
+
+The fact table does not store descriptive attributes such as names or locations. All contextual information is resolved through dimension tables.
+
+---
+
+### Dimension Tables
+
+#### `dim_ibu` (Mother Dimension)
+
+Provides demographic and background information about the mother, enabling analysis by maternal characteristics.
+
+Key attributes include:
+- Mother identifier
+- Date of birth and derived age
+- Education level
+- Occupation
+
+This dimension supports analysis such as ANC utilization by age group or education level.
+
+---
+
+#### `dim_fasilitas` (Healthcare Facility Dimension)
+
+Stores master data related to healthcare facilities where ANC services are delivered.
+
+Key attributes include:
+- Facility name
+- Facility type (e.g., Puskesmas, Hospital, Clinic)
+- Administrative location (district and regency)
+
+This dimension enables geographic and facility-level performance analysis.
+
+---
+
+#### `dim_date` (Date Dimension)
+
+Provides a standardized time dimension to support temporal analysis without complex date functions.
+
+Key attributes include:
+- Calendar date
+- Day, month, quarter, and year breakdowns
+
+This dimension supports time-based trend analysis and reporting.
+
+---
+
+### Table Relationships
+
+All dimension tables are linked to the fact table using **surrogate keys** in a one-to-many relationship:
+
+- `dim_ibu → fact_anc_visit`
+- `dim_fasilitas → fact_anc_visit`
+- `dim_date → fact_anc_visit`
+
+This structure ensures:
+- High query performance
+- Clear analytical paths
+- Consistent KPI definitions
+
+---
+
+### Design Considerations
+
+- Business logic is applied only in the Gold Layer.
+- Aggregations and KPI calculations are performed on top of the fact table.
+- The schema is extensible to include additional public health domains in the future (e.g., immunization, child nutrition).
+
+The Star Schema design aligns with data warehousing best practices and supports scalable public health analytics.
