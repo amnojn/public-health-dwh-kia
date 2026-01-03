@@ -65,22 +65,22 @@ public-health-dwh-kia/
 ├── README.md
 └── .gitignore
 
-## 🧱 Data Layers Description
+🧱 Data Layers Description
 
-### Bronze Layer
+Bronze Layer
 - Stores raw source data without transformation  
 - Preserves original formats for traceability  
 - All fields stored as `TEXT` where applicable  
 - Includes ingestion metadata (`ingested_at`)  
 
-### Silver Layer
+Silver Layer
 - Cleans and standardizes data from Bronze  
 - Applies data type conversion  
 - Handles missing values and duplicates  
 - Enforces data quality rules  
 - Acts as the **Single Source of Truth**  
 
-### Gold Layer
+Gold Layer
 - Implements **Star Schema**  
 - Uses dimension and fact **views**  
 - Applies business logic and data integration  
@@ -88,21 +88,21 @@ public-health-dwh-kia/
 
 ---
 
-## ⭐ Gold Layer – Business Focus
+⭐ Gold Layer – Business Focus
 
-### Business Process
-- **Antenatal Care (ANC) Visits**
+Business Process
+- Antenatal Care (ANC) Visits
 
-### Fact Table
+Fact Table
 - `fact_anc_visit`  
-- **Grain:** one ANC visit per mother per date per facility  
+- Grain: one ANC visit per mother per date per facility  
 
-### Dimensions
+Dimensions
 - `dim_date`  
 - `dim_ibu`  
 - `dim_fasilitas`  
 
-### Example Analytical Questions
+Example Analytical Questions
 - How many ANC visits occur per month?  
 - What is the distribution of gestational age at visit?  
 - Which facilities serve the highest ANC volume?  
@@ -110,7 +110,7 @@ public-health-dwh-kia/
 
 ---
 
-## 📊 Data Quality & Governance
+📊 Data Quality & Governance
 
 This project enforces explicit data quality rules:
 
@@ -126,18 +126,18 @@ All rules are documented in:
 
 ---
 
-## 🗺️ Data Scope
+🗺️ Data Scope
 
-- **Geographic Scope:** Kabupaten Jember, Indonesia  
-- **Facilities:** Realistic but synthetic healthcare facilities  
-- **Data Type:** Fully synthetic (no real personal data)  
-- **Volume:** Medium-scale datasets suitable for analytical workloads  
+- Geographic Scope:** Kabupaten Jember, Indonesia  
+- Facilities:** Realistic but synthetic healthcare facilities  
+- Data Type:** Fully synthetic (no real personal data)  
+- Volume:** Medium-scale datasets suitable for analytical workloads  
 
 📌 This project uses **synthetic data** for ethical and privacy reasons.
 
 ---
 
-## 🛠️ Technology Stack
+🛠️ Technology Stack
 
 - **Database:** PostgreSQL  
 - **Transformation:** SQL  
@@ -149,7 +149,7 @@ All rules are documented in:
 
 ---
 
-## 🎯 Project Goals
+🎯 Project Goals
 
 This project demonstrates:
 - End-to-end Data Warehouse design  
@@ -160,7 +160,7 @@ This project demonstrates:
 
 ---
 
-## 🚀 Potential Extensions
+🚀 Potential Extensions
 
 - Incremental loading strategies  
 - Slowly Changing Dimensions (SCD)  

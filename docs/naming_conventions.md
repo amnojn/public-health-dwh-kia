@@ -1,4 +1,3 @@
-docs/naming_conventions.md
 # Naming Conventions
 
 ## 1. Purpose
