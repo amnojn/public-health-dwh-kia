@@ -35,7 +35,6 @@ Each layer has a clearly defined responsibility to ensure:
 
 ## 📂 Repository Structure
 
-```text
 public-health-dwh-kia/
 │
 ├── data/
@@ -65,140 +64,105 @@ public-health-dwh-kia/
 ├── README.md
 └── .gitignore
 
+## 🧱 Data Layers Description
 
-🧱 Data Layers Description
+### Bronze Layer
+- Stores raw source data without transformation  
+- Preserves original formats for traceability  
+- All fields stored as `TEXT` where applicable  
+- Includes ingestion metadata (`ingested_at`)  
 
-Bronze Layer
+### Silver Layer
+- Cleans and standardizes data from Bronze  
+- Applies data type conversion  
+- Handles missing values and duplicates  
+- Enforces data quality rules  
+- Acts as the **Single Source of Truth**  
 
-Stores raw source data without transformation
+### Gold Layer
+- Implements **Star Schema**  
+- Uses dimension and fact **views**  
+- Applies business logic and data integration  
+- Optimized for analytical queries  
 
-Preserves original formats for traceability
+---
 
-All fields stored as TEXT where applicable
+## ⭐ Gold Layer – Business Focus
 
-Includes ingestion metadata (ingested_at)
+### Business Process
+- **Antenatal Care (ANC) Visits**
 
-Silver Layer
+### Fact Table
+- **`fact_anc_visit`**  
+- **Grain:** one ANC visit per mother per date per facility  
 
-Cleans and standardizes data from Bronze
+### Dimensions
+- `dim_date`  
+- `dim_ibu`  
+- `dim_fasilitas`  
 
-Applies data type conversion
+### Example Analytical Questions
+- How many ANC visits occur per month?  
+- What is the distribution of gestational age at visit?  
+- Which facilities serve the highest ANC volume?  
+- How does ANC utilization vary across districts?  
 
-Handles missing values and duplicates
+---
 
-Enforces data quality rules
-
-Acts as the Single Source of Truth
-
-Gold Layer
-
-Implements Star Schema
-
-Uses dimension and fact views
-
-Applies business logic and data integration
-
-Optimized for analytical queries
-
-⭐ Gold Layer – Business Focus
-Business Process
-
-Antenatal Care (ANC) Visits
-
-Fact Table
-
-fact_anc_visit
-
-Grain: one ANC visit per mother per date per facility
-
-Dimensions
-
-dim_date
-
-dim_ibu
-
-dim_fasilitas
-
-Example Analytical Questions
-
-How many ANC visits occur per month?
-
-What is the distribution of gestational age at visit?
-
-Which facilities serve the highest ANC volume?
-
-How does ANC utilization vary across districts?
-
-📊 Data Quality & Governance
+## 📊 Data Quality & Governance
 
 This project enforces explicit data quality rules:
 
-No duplicate primary identifiers
-
-Valid date ranges
-
-Valid numeric ranges (e.g., gestational age, weight)
-
-Standardized categorical values
-
-Referential integrity between facts and dimensions
+- No duplicate primary identifiers  
+- Valid date ranges  
+- Valid numeric ranges (e.g., gestational age, weight)  
+- Standardized categorical values  
+- Referential integrity between facts and dimensions  
 
 All rules are documented in:
+- `docs/data_quality.md`  
+- `docs/data_dictionary.md`  
 
-docs/data_quality.md
+---
 
-docs/data_dictionary.md
+## 🗺️ Data Scope
 
-🗺️ Data Scope
+- **Geographic Scope:** Kabupaten Jember, Indonesia  
+- **Facilities:** Realistic but synthetic healthcare facilities  
+- **Data Type:** Fully synthetic (no real personal data)  
+- **Volume:** Medium-scale datasets suitable for analytical workloads  
 
-Geographic Scope: Kabupaten Jember, Indonesia
+📌 This project uses **synthetic data** for ethical and privacy reasons.
 
-Facilities: Realistic but synthetic healthcare facilities
+---
 
-Data Type: Fully synthetic (no real personal data)
+## 🛠️ Technology Stack
 
-Volume: Medium-scale datasets suitable for analytical workloads
+- **Database:** PostgreSQL  
+- **Transformation:** SQL  
+- **Architecture:** Medallion Architecture  
+- **Modeling:** Star Schema  
+- **Version Control:** Git & GitHub  
+- **Documentation:** Markdown  
+- **Diagramming:** Draw.io  
 
-📌 This project uses synthetic data for ethical and privacy reasons.
+---
 
-🛠️ Technology Stack
-
-Database: PostgreSQL
-
-Transformation: SQL
-
-Architecture: Medallion Architecture
-
-Modeling: Star Schema
-
-Version Control: Git & GitHub
-
-Documentation: Markdown
-
-Diagramming: Draw.io
-
-🎯 Project Goals
+## 🎯 Project Goals
 
 This project demonstrates:
+- End-to-end Data Warehouse design  
+- Professional SQL transformation patterns  
+- Data quality enforcement  
+- Clear documentation and governance  
+- Realistic public health analytics use case  
 
-End-to-end Data Warehouse design
+---
 
-Professional SQL transformation patterns
+## 🚀 Potential Extensions
 
-Data quality enforcement
-
-Clear documentation and governance
-
-Realistic public health analytics use case
-
-🚀 Potential Extensions
-
-Incremental loading strategies
-
-Slowly Changing Dimensions (SCD)
-
-BI tool integration (Power BI, Tableau)
-
-Additional public health domains
-
-Automated data validation tests
+- Incremental loading strategies  
+- Slowly Changing Dimensions (SCD)  
+- BI tool integration (Power BI, Tableau)  
+- Additional public health domains  
+- Automated data validation tests  
