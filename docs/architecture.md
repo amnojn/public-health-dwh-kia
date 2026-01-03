@@ -201,3 +201,86 @@ Potential future extensions of this architecture include:
 - Slowly Changing Dimensions (SCD).
 - Integration with BI visualization tools.
 - Additional public health domains beyond Maternal and Child Health.
+
+## 9. Gold Layer — Business-Oriented Analytics Design
+
+This section describes the analytical design considerations applied in the Gold Layer, focusing on business objects, KPI definitions, and fact table grain selection for Maternal and Child Health (KIA) analytics.
+
+---
+
+### 9.1 Business Object Definition
+
+In the context of this Data Warehouse, a **Business Object** represents a real-world entity that is meaningful for public health analysis and decision-making.
+
+For the Maternal and Child Health (KIA) domain, the primary business objects include:
+
+- **ANC Visit** — a recorded antenatal care examination event
+- **Mother (Ibu)** — a pregnant woman receiving maternal healthcare services
+- **Healthcare Facility** — a service provider delivering maternal health services
+- **Time** — the temporal dimension used for trend analysis and reporting
+- **Location** — the geographical context of healthcare service delivery
+
+These business objects form the conceptual foundation of the Gold Layer and directly influence the design of fact and dimension tables.
+
+---
+
+### 9.2 Mapping Business Objects to Data Warehouse Structures
+
+Each business object is mapped to a corresponding analytical structure within the Gold Layer as follows:
+
+| Business Object | Data Warehouse Representation |
+|-----------------|-------------------------------|
+| ANC Visit | Fact table (`fact_anc_visit`) |
+| Mother | Dimension table (`dim_ibu`) |
+| Healthcare Facility | Dimension table (`dim_fasilitas`) |
+| Time | Dimension table (`dim_date`) |
+| Location | Dimension attributes within facility or location dimension |
+
+This mapping ensures a clear and consistent relationship between real-world public health concepts and analytical data structures.
+
+---
+
+### 9.3 Fact Table Grain Definition
+
+The selected grain for the primary fact table is:
+
+> **One ANC visit per mother per date per healthcare facility**
+
+This grain selection is justified because it:
+
+- Reflects how ANC services are operationally recorded
+- Preserves visit-level accuracy and traceability
+- Enables flexible aggregation across time periods and locations
+- Supports downstream KPI calculation without data loss
+
+Choosing a fine-grained fact table avoids premature aggregation and maintains analytical flexibility for future use cases.
+
+---
+
+### 9.4 Key Performance Indicator (KPI) Design Philosophy
+
+All Key Performance Indicators (KPIs) derived in the Gold Layer follow these principles:
+
+- KPIs are explicitly defined before implementation
+- Calculations are transparent and reproducible
+- Metrics align with maternal health monitoring standards
+- KPIs are aggregatable across geography and time dimensions
+- Business logic is isolated in the Gold Layer
+
+This approach ensures that analytical outputs remain consistent, auditable, and trusted by public health stakeholders.
+
+---
+
+### 9.5 Gold Layer Readiness Criteria
+
+The Gold Layer is considered analytically ready for implementation when the following conditions are met:
+
+- Business objects are clearly defined
+- Fact table grain is finalized and documented
+- KPI definitions are formally specified
+- Required dimensions are identified
+- Data lineage from the Silver Layer is preserved
+
+Only after meeting these criteria should technical implementation of the Gold Layer begin.
+
+---
