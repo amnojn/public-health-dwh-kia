@@ -34,7 +34,7 @@ Each layer has a clearly defined responsibility to ensure:
 ---
 
 ## 📂 Repository Structure
-
+```
 public-health-dwh-kia/
 │
 ├── data/
@@ -63,7 +63,7 @@ public-health-dwh-kia/
 │
 ├── README.md
 └── .gitignore
-
+```
 ## 🧱 Data Layers Description
 
 ### Bronze Layer
